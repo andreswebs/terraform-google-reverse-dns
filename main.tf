@@ -2,11 +2,10 @@ locals {
   reverse_dns_domain = "in-addr.arpa."
   reverse_address    = "${join(".", reverse(split(".", var.ipv4_address)))}.${local.reverse_dns_domain}"
   fqdn               = "${replace(var.fqdn, "/\\.*$/", "")}."
-  name               = split(".", local.fqdn)[0]
 }
 
 resource "google_dns_record_set" "this" {
-  name         = local.name
+  name         = local.fqdn
   type         = "A"
   ttl          = var.dns_ttl
   managed_zone = var.dns_zone_name
